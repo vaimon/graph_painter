@@ -14,6 +14,10 @@ class GraphPainter extends CustomPainter {
     Paint blackPainter = Paint()..strokeWidth = 3
       ..style = PaintingStyle.stroke
       ..color = Color(0xFF000000);
+
+    Paint thinPainter = Paint()..strokeWidth = 1
+      ..style = PaintingStyle.stroke
+      ..color = Color(0x20000000);
     var cordPath = Path();
     cordPath.moveTo(size.width/2, size.height);
     cordPath.lineTo(size.width/2, 0);
@@ -30,10 +34,26 @@ class GraphPainter extends CustomPainter {
     cordPath.close();
     canvas.drawPath(cordPath, blackPainter);
 
-    canvas.drawRect(Rect.fromCenter(center: Offset(size.width/2 - oneScale, size.height/2), width: 1, height: 10), blackPainter);
-    canvas.drawRect(Rect.fromCenter(center: Offset(size.width/2 + oneScale, size.height/2), width: 1, height: 10), blackPainter);
-    canvas.drawRect(Rect.fromCenter(center: Offset(size.width/2, size.height/2 - oneScale), width: 10, height: 1), blackPainter);
-    canvas.drawRect(Rect.fromCenter(center: Offset(size.width/2, size.height/2 + oneScale), width: 10, height: 1), blackPainter);
+    var vert = size.width/2 - oneScale;
+    var hor = size.height/2 - oneScale;
+    while(vert > 0){
+      canvas.drawLine(Offset(vert, 0), Offset(vert, size.height), thinPainter);
+      vert -= oneScale;
+    }
+    while(hor > 0){
+      canvas.drawLine(Offset(0, hor), Offset(size.width, hor), thinPainter);
+      hor -= oneScale;
+    }
+    vert = size.width/2 + oneScale;
+    hor = size.height/2 + oneScale;
+    while(vert < size.width){
+      canvas.drawLine(Offset(vert, 0), Offset(vert, size.height), thinPainter);
+      vert += oneScale;
+    }
+    while(hor < size.height){
+      canvas.drawLine(Offset(0, hor), Offset(size.width, hor), thinPainter);
+      hor += oneScale;
+    }
 
     Paint redPainter = Paint()..strokeWidth = 3
       ..style = PaintingStyle.stroke
