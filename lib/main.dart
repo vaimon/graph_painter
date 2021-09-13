@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:graph_painter/constants.dart';
 import 'package:graph_painter/function_settings.dart';
 import 'package:graph_painter/painter.dart';
+import 'package:graph_painter/range_settings.dart';
 import 'package:graph_painter/size_settings.dart';
 
 void main() {
@@ -18,6 +19,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Function(double) function;
   double size;
+  Range range;
 
   setSize(double newSize) {
     setState(() {
@@ -31,10 +33,17 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  setRange(Range newRange) {
+    setState(() {
+      range = newRange;
+    });
+  }
+
   @override
   void initState() {
     size = 100;
     function = FunctionsHelper.functions[0];
+    range = Range(double.negativeInfinity, double.infinity);
     super.initState();
   }
 
@@ -53,7 +62,7 @@ class _MyAppState extends State<MyApp> {
                 width: double.infinity,
                 height: double.infinity,
                 child: CustomPaint(
-                  painter: GraphPainter(function, size),
+                  painter: GraphPainter(function, size, range),
                 ),
               ),
               Align(
@@ -66,9 +75,12 @@ class _MyAppState extends State<MyApp> {
                       FunctionSettings(
                         functionCallback: setFunction,
                       ),
+                      RangeSettings(
+                        settingCallback: setRange,
+                      ),
                       SizeSettings(
                         settingCallback: setSize,
-                      )
+                      ),
                     ],
                   ),
                 ),

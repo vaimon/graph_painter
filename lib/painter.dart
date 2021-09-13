@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:graph_painter/constants.dart';
 
 class GraphPainter extends CustomPainter {
   final Function(double) function;
   double scaleSize;
   double oneScale;
+  Range range;
 
-  GraphPainter(this.function, this.scaleSize);
+  GraphPainter(this.function, this.scaleSize, this.range);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -62,10 +64,17 @@ class GraphPainter extends CustomPainter {
     var graphPath = Path();
     graphPath.moveTo(size.width/2, size.height/2 - function(0) * oneScale);
     for(double x = 0; x < size.width/2; x++){
+      if(!range.isInRange(x/oneScale)){
+        break;
+      }
       graphPath.lineTo(x + size.width/2, size.height/2 - function(x/oneScale) * oneScale);
     }
     graphPath.moveTo(size.width/2, size.height/2 - function(0) * oneScale);
+    print("range: ${range.start} ${range.end}");
     for(double x = 0; x < size.width/2; x++){
+      if(!range.isInRange(-x/oneScale)){
+        break;
+      }
       graphPath.lineTo(-x + size.width/2, size.height/2 - function(-x/oneScale) * oneScale);
     }
     canvas.drawPath(graphPath, redPainter);
@@ -75,7 +84,7 @@ class GraphPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant GraphPainter oldDelegate) {
-    return oldDelegate.function != function || oldDelegate.scaleSize != scaleSize;
+    return oldDelegate.function != function || oldDelegate.scaleSize != scaleSize || oldDelegate.range != range;
   }
 
 }
