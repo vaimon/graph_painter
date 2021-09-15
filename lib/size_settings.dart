@@ -3,14 +3,19 @@ import 'constants.dart';
 
 class SizeSettings extends StatefulWidget {
   final Function(double) settingCallback;
+  double size;
 
-  const SizeSettings({Key key, this.settingCallback}) : super(key: key);
+  SizeSettings({Key key, this.settingCallback, this.size}) : super(key: key);
   @override
   _SizeSettingsState createState() => _SizeSettingsState();
 }
 
 class _SizeSettingsState extends State<SizeSettings> {
-  double currentSize = 100.0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,7 +34,7 @@ class _SizeSettingsState extends State<SizeSettings> {
       child: Column(
         children: [
           Text(
-            "Масштаб (${currentSize.floor()}%)",
+            "Масштаб (${widget.size.floor()}%)",
             style: TextStyle(
               fontSize: 16,
             ),
@@ -38,15 +43,15 @@ class _SizeSettingsState extends State<SizeSettings> {
             height: 30,
             width: 200,
             child: Slider(
-              value: currentSize,
+              value: widget.size,
               activeColor: Color(0xFF900000),
               min: 1,
               max: 150,
               inactiveColor: Color(0x27900000),
-              label: currentSize.round().toString(),
+              label: widget.size.round().toString(),
               onChanged: (double value) {
                 setState(() {
-                  currentSize = value;
+                  widget.size = value;
                   widget.settingCallback(value);
                 });
               },

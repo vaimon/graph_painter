@@ -9,6 +9,13 @@ class FunctionsHelper {
   ];
 
   static List<String> functionNames = ["sin(x)", "x^2", "x^3", "cos(x)"];
+
+  static List<Range> functionExtremums = [
+    Range(-1, 1),
+    Range(0, double.infinity),
+    Range(double.negativeInfinity, double.infinity),
+    Range(-1, 1)
+  ];
 }
 
 class Range {
@@ -18,5 +25,9 @@ class Range {
 
   bool isInRange(double x) {
     return x >= start && x <= end;
+  }
+
+  bool isInfinite(){
+    return start == double.negativeInfinity || end == double.infinity;
   }
 }

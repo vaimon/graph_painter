@@ -20,6 +20,7 @@ class _MyAppState extends State<MyApp> {
   Function(double) function;
   double size;
   Range range;
+  Range extremums;
 
   setSize(double newSize) {
     setState(() {
@@ -27,15 +28,18 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  setFunction(Function(double) newFunction) {
+  setFunction(Function(double) newFunction, Range newExtremums) {
     setState(() {
       function = newFunction;
+      extremums = newExtremums;
+      size = 100;
     });
   }
 
   setRange(Range newRange) {
     setState(() {
       range = newRange;
+      size = 100;
     });
   }
 
@@ -43,6 +47,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     size = 100;
     function = FunctionsHelper.functions[0];
+    extremums = FunctionsHelper.functionExtremums[0];
     range = Range(double.negativeInfinity, double.infinity);
     super.initState();
   }
@@ -50,7 +55,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Лучше чем матлаб',
+      title: 'Лучше, чем матлаб',
       builder: (context, child) {
         return child;
       },
@@ -62,7 +67,7 @@ class _MyAppState extends State<MyApp> {
                 width: double.infinity,
                 height: double.infinity,
                 child: CustomPaint(
-                  painter: GraphPainter(function, size, range),
+                  painter: GraphPainter(function,extremums, size, range),
                 ),
               ),
               Align(
@@ -80,6 +85,7 @@ class _MyAppState extends State<MyApp> {
                       ),
                       SizeSettings(
                         settingCallback: setSize,
+                        size: size,
                       ),
                     ],
                   ),

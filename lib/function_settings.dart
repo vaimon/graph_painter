@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 
 class FunctionSettings extends StatefulWidget {
-  final Function(Function(double)) functionCallback;
+  final Function(Function(double),Range) functionCallback;
 
   const FunctionSettings({Key key, this.functionCallback}) : super(key: key);
   @override
@@ -18,7 +18,7 @@ class _FunctionSettingsState extends State<FunctionSettings> {
 
   setSelectedGraph(dynamic val) {
     setState(() {
-      widget.functionCallback(FunctionsHelper.functions[val]);
+      widget.functionCallback(FunctionsHelper.functions[val], FunctionsHelper.functionExtremums[val]);
       selectedGraphFun = val;
     });
   }
