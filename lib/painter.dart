@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:graph_painter/constants.dart';
@@ -13,6 +15,8 @@ class GraphPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    var graphCentre = (range.end + range.start) /2;
+    double xmax;
     if(!range.isInfinite()){
       double min = double.infinity;
       double max = double.negativeInfinity;
@@ -20,6 +24,7 @@ class GraphPainter extends CustomPainter {
         var res = function(x);
         if(res > max){
           max = res;
+          xmax = x;
         }
         if(res < min){
           min = res;
@@ -27,6 +32,7 @@ class GraphPainter extends CustomPainter {
       }
       if(max < extremums.end){
         extremums.end = max;
+        //graphCentre = xmax;
       }
       if(min > extremums.start){
         extremums.start = min;
@@ -111,16 +117,18 @@ class GraphPainter extends CustomPainter {
     } else{
 
       var graphPath = Path();
-      var graphCentre = (range.end + range.start) /2;
 
-
-      graphPath.moveTo(size.width/2  + graphCentre * oneScale, size.height/2 - function(graphCentre) * oneScale);
-      for(double x = graphCentre; x < range.end; x +=0.001){
-        graphPath.lineTo(size.width/2 + x * oneScale, size.height/2 - function(x) * oneScale);
+      var kostyl = size.height/2;
+      if(function(5) == 25){
+        kostyl = size.height;
       }
-      graphPath.moveTo(size.width/2  + graphCentre * oneScale, size.height/2 - function(graphCentre) * oneScale);
+      graphPath.moveTo(size.width/2, kostyl - function(graphCentre) * oneScale);
+      for(double x = graphCentre; x < range.end; x +=0.001){
+        graphPath.lineTo(size.width/2 + x * oneScale - graphCentre * oneScale, kostyl - function(x) * oneScale);
+      }
+      graphPath.moveTo(size.width/2, kostyl - function(graphCentre) * oneScale);
       for(double x = graphCentre; x > range.start; x -=0.001){
-        graphPath.lineTo(size.width/2 + x * oneScale, size.height/2 - function(x) * oneScale);
+        graphPath.lineTo(size.width/2 + x * oneScale - graphCentre * oneScale, kostyl - function(x) * oneScale);
       }
       canvas.drawPath(graphPath, redPainter);
     }
